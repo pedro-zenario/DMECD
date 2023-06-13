@@ -1,0 +1,88 @@
+* Lime RecurrentTabularExplainer *
+
+- It is a variant of the Local Interpretable Model-Agnostic Explanations (LIME) algorithm designed specifically for explaining the predictions of recurrent neural networks on tabular data.
+Recurrent neural networks (RNNs) are a type of neural network commonly used for sequential data such as time series or text.
+- It helps to explain the predictions of such models by identifying the most important features that contributed to the model's output for a given input sequence.
+- It works by perturbing the input sequence and generating new sequences with slight variations. These new sequences are then used to train an interpretable model, such as a linear model, that approximates the predictions of the original RNN model. The coefficients of the interpretable model can then be used to identify the features that had the greatest impact on the original model's output.
+- Overall, Lime RecurrentTabularExplainer can be a useful tool for understanding how recurrent neural networks make predictions on tabular data, which can be important for model validation and improving model performance.
+
+* How LIME works? *
+
+- Sampling and obtaining a surrogate dataset: LIME provides locally faithful explanations around the vicinity of the instance being explained. By default, it produces 5000 samples (num_samples argument) of the feature vector following the normal distribution. Then it obtains the target variable for these 5000 samples using the prediction model, whose decisions it’s trying to explain.
+- Feature Selection from the surrogate dataset: After obtaining the surrogate dataset, it weighs each row according to how close they are to the original sample/observation. Then it uses a feature selection technique like Lasso to obtain the top important features.
+- LIME also employs a Ridge Regression model on the samples using only the obtained features. The output prediction should theoretically be similar in magnitude to the one output by the original prediction model. This is done to stress the relevance and importance of these obtained features.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* CODE *
+idx = 0             # index of the prediction for the test instance
+n_samples = 5000
+explainer = lime_tabular.RecurrentTabularExplainer(training_data=X_train, mode="regression", feature_names=nin_names)
+exp = explainer.explain_instance(data_row=X_test[idx], classifier_fn=custom_predictor, num_samples=n_samples)
+
+* CODE EXPLANATION *
+- explainer = lime_tabular.RecurrentTabularExplainer(training_data=X_train, mode="regression", feature_names=nin_names):
+ . This line creates an instance of the RecurrentTabularExplainer class from the lime_tabular module.
+ . The X_train argument is the training set of the data that the RNN model was trained on.
+ . The mode argument specifies the type of problem (classification or regression) that the RNN model was trained to solve. In this case, it's set to "regression".
+ . The feature_names argument specifies the names of the features in the dataset.
+
+- exp = explainer.explain_instance(data_row=X_test[idx], classifier_fn=custom_predictor, num_samples=n_samples):
+ . This line generates an explanation for the prediction of the RNN model on a single test instance, X_test[0].
+ . The custom_predictor argument is a function that takes in a sequence of feature values and returns the corresponding prediction from the RNN model.
+ . The num_samples argument specifies the number of perturbed samples to generate when explaining the prediction.
+
+- The explain_instance method returns an instance of the lime.explanation.Explanation class, which contains the following attributes:
+ . available_labels: The labels that the RNN model can predict (in this case, it's a regression problem, so there's only one label).
+ . domain_mapper: A lime.lime_tabular.DomainMapper object that maps the feature values in the explanation to their original names.
+ . exp: A list of tuples, where each tuple corresponds to a feature and its corresponding weight. The weights indicate the relative importance of each feature in the RNN model's prediction for the given instance.
+
+
+* OUTPUT *
+
+Intercept -0.06236826479951761
+Prediction_local [-0.04970143]
+Right: -0.045795705
+
+               Feature  Contribution
+0   PLMR_t-999 <= 0.00      0.011019
+1   PLML2_t-999 > 0.00      0.006057
+2    AVBL_t-999 > 0.00     -0.002716
+3   AVBR_t-999 <= 0.00     -0.001868
+4  PLML2_t-282 <= 0.00     -0.000504
+5   AVBL_t-178 <= 0.00      0.000501
+6   PLMR_t-290 <= 0.00      0.000349
+7    PLMR_t-466 > 0.00     -0.000152
+8    PLMR_t-497 > 0.00     -0.000139
+9   PLML2_t-803 > 0.00      0.000120
+
+* OUTPUT EXPLANATION *
+- Right: This denotes the prediction given by our prediction model for the given test vector.
+
+- Prediction_local: This denotes the value outputed by a linear model trained on the perturbed samples (obtained by sampling around the test vector following a normal distribution) and using only the top k features output by LIME.
+
+- Intercept: The intercept is the constant part of the prediction given by the above linear model’s prediction for the given test vector.
+
+- This output is the list of feature weights generated by the explain_instance method of the RecurrentTabularExplainer class. Specifically, it's a list of tuples where the first element of each tuple is a feature name or condition, and the second element is the weight assigned to that feature by the explainer.
+
+- In this case, the output shows the top 10 features that contributed most significantly to the prediction of the RNN model for the given test instance. The sign of the weight indicates the direction of the contribution: positive weights indicate that the feature value is positively correlated with the predicted value, while negative weights indicate the opposite.
+
+- The weights in the output of explain_instance represent the relative importance of each feature in the RNN model's prediction for the given test instance. Specifically, the weight assigned to a feature indicates how much that feature contributed to the final prediction.
+
+- The weight can be positive or negative, and its sign indicates the direction of the contribution: positive weights indicate that the feature value is positively correlated with the predicted value, while negative weights indicate the opposite. A larger weight indicates that the corresponding feature has a stronger influence on the prediction.
+
+- For example, the first tuple in the list is ('PLMR_t-999 <= 0.00', 0.011019). This means that the feature condition PLMR_t-999 <= 0.00 (i.e., the value of the PLMR feature at time step -999 is less than or equal to 0) had the highest positive weight of 0.011019, indicating that this feature had the strongest positive influence on the RNN model's prediction for this instance.
+
+- Similarly, the second tuple ('PLML2_t-999 > 0.00', 0.006057) indicates that the feature condition PLML2_t-999 > 0.00 (i.e., the value of the PLML2 feature at time step -999 is greater than 0) had a positive weight of 0.006057, indicating that this feature also had a significant positive influence on the RNN model's prediction.
+
+- The remaining tuples in the list follow the same pattern, indicating the relative importance of each feature or feature condition in the RNN model's prediction for the given test instance.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* NOTES *
+- (*)predictions_reshaped = np.reshape(predictions, (50, 4000), order='F') == pred_0 = predictions[:,:,0];
+- predictions[:,:,[0, 1]] = predictions[:,:,[1, 0]] + *                    == pred_1 = predictions[:,:,1];
+- predictions[:,:,[0, 2]] = predictions[:,:,[2, 0]] + *                    == pred_2 = predictions[:,:,2];
+- predictions[:,:,[0, 3]] = predictions[:,:,[3, 0]] + *                    == pred_3 = predictions[:,:,3];
+
+
+
+
