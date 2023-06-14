@@ -11,6 +11,13 @@ import shap
 # import pickle
 from collections import Counter
 
+import tensorflow._api.v2.compat.v1 as tf
+from tensorflow.compat.v1.keras.backend import get_session
+tf.compat.v1.disable_v2_behavior()
+tf.compat.v1.disable_eager_execution()
+from tensorflow.python.ops.numpy_ops import np_config
+np_config.enable_numpy_behavior()
+
 def main():
     ###########################################################################
     # Parser Definition
