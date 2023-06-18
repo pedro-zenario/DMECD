@@ -50,8 +50,10 @@ def readdata(data_path, file_list, cols, nin, nout):
     # print(np.array(datax).shape)
     # print(np.array(datay).shape)
 
-    # datax = np.array(datax)[:,:50,:]
-    # datay = np.array(datay)[:,:50,:]
+    datax = np.array(datax)[:,:50,:]
+    datay = np.array(datay)[:,:50,:]
+
+    # datay = np.array(datay)[:,:,:1]
 
     return datax, datay
 

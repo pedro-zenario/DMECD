@@ -24,7 +24,7 @@ def createmodel(opt, output_size):
     elif opt.model == 'RNN':
         model.add(SimpleRNN(opt.hidden_size, return_sequences=True))
     model.add(TimeDistributed(Dense(output_size)))
-    # model.add(Flatten())  # Convert output to 2D shape
+    model.add(Flatten())  # Convert output to 2D shape
 
     return model
 
@@ -105,13 +105,17 @@ def main():
     # print(np.array(trainx).shape)
     # print(np.array(trainy).shape)
 
+    # trainy = np.reshape(trainy, (20, 1000), order='F')
+    # validy = np.reshape(validy, (10, 1000), order='F')
+    # testy = np.reshape(testy, (10, 1000), order='F')
+
     # trainy = np.reshape(trainy, (20, 4000), order='F')
     # validy = np.reshape(validy, (10, 4000), order='F')
     # testy = np.reshape(testy, (10, 4000), order='F')
 
-    # trainy = np.reshape(trainy, (20, 200), order='F')
-    # validy = np.reshape(validy, (10, 200), order='F')
-    # testy = np.reshape(testy, (10, 200), order='F')
+    trainy = np.reshape(trainy, (20, 200), order='F')
+    validy = np.reshape(validy, (10, 200), order='F')
+    testy = np.reshape(testy, (10, 200), order='F')
 
 
     if opt.plots:
@@ -125,7 +129,7 @@ def main():
     ###########################################################################
     # Create and Train Model
     ###########################################################################
-    output_size = 1
+    output_size = 4
     model = createmodel(opt, output_size)
     model.compile(optimizer=opt_function, loss='mean_squared_error')
     callbacks_list = getcallbacks(opt)

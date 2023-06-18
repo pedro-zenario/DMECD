@@ -25,60 +25,60 @@ def evaluateresults(model, opt, trainx, trainy, validx, validy, testx, testy, ou
 
     return train_l, valid_l, test_l
 
-# def plotresults(opt, real, predicted, folder, string, path, out_size):
-#     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
-    
-#     i = 0
-#     for frame in predicted:
-#         real_nparray = np.array(real)
-#         if (real_nparray.ndim==3):
-#             pos = real[i].shape[1]
-#             for j in range(out_size):
-#                 real[i].insert(
-#                     loc = pos,
-#                     column = cols[j],
-#                     value = frame[:,j]
-#                 )
-#                 pos += 1
-
-#         df = pd.DataFrame(real[i])
-#         df.plot(kind='line')
-        
-#         Path(path + "results_files").mkdir(parents=True, exist_ok=True)
-#         df.to_csv(path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
-        
-#         if opt.plots_out:
-#             plt.legend(loc='upper right')
-#             Path(path + "results_plots").mkdir(parents=True, exist_ok=True)
-#             plt.savefig(path + "results_plots" + string + str(i) + '_response.pdf')
-#             plt.close()
-
-#         i += 1
-
 def plotresults(opt, real, predicted, folder, string, path, out_size):
     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
     
-    i=0
+    i = 0
     for frame in predicted:
-        pos = real[i].shape[1]
-        for j in range(out_size):
-            real[i].insert(
-                loc = pos,
-                column = cols[j],
-                value = frame[:,j]
-            )
-            pos = pos + 1
-        real[i].plot(kind='line')
+        real_nparray = np.array(real)
+        if (real_nparray.ndim==3):
+            pos = real[i].shape[1]
+            for j in range(out_size):
+                real[i].insert(
+                    loc = pos,
+                    column = cols[j],
+                    value = frame[:,j]
+                )
+                pos += 1
+
+        df = pd.DataFrame(real[i])
+        df.plot(kind='line')
+        
         Path(path + "results_files").mkdir(parents=True, exist_ok=True)
-        real[i].to_csv(
-            path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
+        df.to_csv(path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
+        
         if opt.plots_out:
             plt.legend(loc='upper right')
             Path(path + "results_plots").mkdir(parents=True, exist_ok=True)
             plt.savefig(path + "results_plots" + string + str(i) + '_response.pdf')
             plt.close()
 
-        i = i + 1
+        i += 1
+
+# def plotresults(opt, real, predicted, folder, string, path, out_size):
+#     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
+    
+#     i=0
+#     for frame in predicted:
+#         pos = real[i].shape[1]
+#         for j in range(out_size):
+#             real[i].insert(
+#                 loc = pos,
+#                 column = cols[j],
+#                 value = frame[:,j]
+#             )
+#             pos = pos + 1
+#         real[i].plot(kind='line')
+#         Path(path + "results_files").mkdir(parents=True, exist_ok=True)
+#         real[i].to_csv(
+#             path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
+#         if opt.plots_out:
+#             plt.legend(loc='upper right')
+#             Path(path + "results_plots").mkdir(parents=True, exist_ok=True)
+#             plt.savefig(path + "results_plots" + string + str(i) + '_response.pdf')
+#             plt.close()
+
+#         i = i + 1
 
 def main():
     ###########################################################################
@@ -110,6 +110,10 @@ def main():
     trainx, trainy = readdata(opt.datapath, train, neurons, nin, nout)
     validx, validy = readdata(opt.datapath, valid, neurons, nin, nout)
     testx, testy = readdata(opt.datapath, test, neurons, nin, nout)
+
+    trainy = np.reshape(trainy, (20, 1000), order='F')
+    validy = np.reshape(validy, (10, 1000), order='F')
+    testy = np.reshape(testy, (10, 1000), order='F')
 
     # trainy = np.reshape(trainy, (20, 4000), order='F')
     # validy = np.reshape(validy, (10, 4000), order='F')
