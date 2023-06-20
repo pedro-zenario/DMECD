@@ -447,22 +447,22 @@ if __name__ == "__main__":
     num_threads = 128  # Set the number of threads based on your machine's capabilities
     batch_size = len(X_test) // num_threads
 
-    print(num_threads)
-    print(batch_size)
+    print("num_threads=", num_threads)
+    print("batch_size=", batch_size)
 
     shap_values = []
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
         futures = []
         for i in range(num_threads):
-            print("i=" + i)
+            print("i=", i)
             start = i * batch_size
             end = start + batch_size if i < num_threads - 1 else None
-            print("start=" + start)
-            print("end=" + end)
+            print("start=", start)
+            print("end=", end)
             X_test_batch = X_test[start:end, :, :]
-            print("X_test_batch=" + X_test_batch)
+            print("X_test_batch=", X_test_batch)
             future = executor.submit(calculate_shap_values, X_test_batch, model, background)
-            print("future=" + future)
+            print("future=", future)
             futures.append(future)
             print("Exiting for loop...")
 

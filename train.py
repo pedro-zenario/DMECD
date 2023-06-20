@@ -109,13 +109,13 @@ def main():
     # validy = np.reshape(validy, (10, 1000), order='F')
     # testy = np.reshape(testy, (10, 1000), order='F')
 
-    # trainy = np.reshape(trainy, (20, 4000), order='F')
-    # validy = np.reshape(validy, (10, 4000), order='F')
-    # testy = np.reshape(testy, (10, 4000), order='F')
+    trainy = np.reshape(trainy, (20, 4000), order='F')
+    validy = np.reshape(validy, (10, 4000), order='F')
+    testy = np.reshape(testy, (10, 4000), order='F')
 
-    trainy = np.reshape(trainy, (20, 200), order='F')
-    validy = np.reshape(validy, (10, 200), order='F')
-    testy = np.reshape(testy, (10, 200), order='F')
+    # trainy = np.reshape(trainy, (20, 200), order='F')
+    # validy = np.reshape(validy, (10, 200), order='F')
+    # testy = np.reshape(testy, (10, 200), order='F')
 
 
     if opt.plots:
