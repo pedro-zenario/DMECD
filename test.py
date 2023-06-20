@@ -312,6 +312,7 @@ if __name__ == '__main__':
     print(chunk_size)
     X_test_chunks = [X_test[i:i+chunk_size, :, :] for i in range(0, len(X_test), chunk_size)]
     print(X_test_chunks)
+    print(X_test_chunks.shape)
 
 
     # Execute the main function in parallel
