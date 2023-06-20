@@ -106,14 +106,13 @@ import pickle
 from collections import Counter
 import concurrent.futures
 
-# import tensorflow._api.v2.compat.v1 as tf
-# from tensorflow.compat.v1.keras.backend import get_session
-# tf.compat.v1.disable_v2_behavior()
-# tf.compat.v1.disable_eager_execution()
-# from tensorflow.python.ops.numpy_ops import np_config
-# np_config.enable_numpy_behavior()
-
+import tensorflow._api.v2.compat.v1 as tf
+from tensorflow.compat.v1.keras.backend import get_session
 tf.compat.v1.disable_v2_behavior()
+tf.compat.v1.disable_eager_execution()
+from tensorflow.python.ops.numpy_ops import np_config
+np_config.enable_numpy_behavior()
+
 
 def main():
     ###########################################################################
@@ -175,7 +174,10 @@ def run_shap(x, model, background):
     return shap_values
 
 if __name__ == '__main__':
-    X_train, X_test, nin_names = main()
+
+    sess = tf.compat.v1.Session()
+
+    X_train, X_test, nin_names = sess.run(main())
 
     background = X_train[np.random.choice(X_train.shape[0], 1, replace=False)]
 
