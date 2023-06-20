@@ -308,11 +308,14 @@ if __name__ == '__main__':
     pool = Pool(processes=num_processes)
 
     # Split the X_test data into chunks for parallel processing
-    chunk_size = len(X_test[:1,:,:]) // num_processes
-    X_test_chunks = [X_test[i:i+chunk_size, :, :] for i in range(0, len(X_test[:1,:,:]), chunk_size)]
+    chunk_size = len(X_test) // num_processes
+    print(chunk_size)
+    X_test_chunks = [X_test[i:i+chunk_size, :, :] for i in range(0, len(X_test), chunk_size)]
+    print(X_test_chunks)
+
 
     # Execute the main function in parallel
-    results = pool.map(run_shap, X_test_chunks)
+    results = pool.map(run_shap(X_test, model, background), X_test_chunks)
 
     # Combine the results
     combined_results = np.concatenate(results, axis=0)
