@@ -290,8 +290,11 @@ def main():
 
 
 def run_shap(X_test, model, background):
+    print("Inside run_shap")
     explainer = shap.DeepExplainer(model, background)
+    print("Middle run_shap")
     shap_values = explainer.shap_values(X_test[:, :, :])
+    print("Returning run_shap")
     return shap_values
 
 
@@ -302,7 +305,7 @@ if __name__ == '__main__':
     background = X_train[np.random.choice(X_train.shape[0], 1, replace=False)]
 
     # Define the number of processes to use
-    num_processes = 4  # Adjust this number based on your system's capacity
+    num_processes = 128  # Adjust this number based on your system's capacity
 
     # Create a Pool of processes
     pool = Pool(processes=num_processes)
