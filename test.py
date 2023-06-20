@@ -106,12 +106,12 @@ import pickle
 from collections import Counter
 import concurrent.futures
 
-import tensorflow._api.v2.compat.v1 as tf
-from tensorflow.compat.v1.keras.backend import get_session
-tf.compat.v1.disable_v2_behavior()
+# import tensorflow._api.v2.compat.v1 as tf
+# from tensorflow.compat.v1.keras.backend import get_session
+# tf.compat.v1.disable_v2_behavior()
 tf.compat.v1.disable_eager_execution()
-from tensorflow.python.ops.numpy_ops import np_config
-np_config.enable_numpy_behavior()
+# from tensorflow.python.ops.numpy_ops import np_config
+# np_config.enable_numpy_behavior()
 
 
 def main():
@@ -168,21 +168,18 @@ def main():
     return X_train, X_test, nin_names
 
 
-def run_shap(x, model, background):
-    explainer = shap.DeepExplainer(tf.compat.v1.keras.backend.get_session().graph, model, background)
-    shap_values = explainer.shap_values(x)
+def run_shap(X_test, model, background):
+    explainer = shap.DeepExplainer(model, background)
+    shap_values = explainer.shap_values(X_test[:, :, :])
     return shap_values
 
 if __name__ == '__main__':
-
-    sess = tf.compat.v1.Session()
-
-    X_train, X_test, nin_names = sess.run(main())
+    X_train, X_test, nin_names = main()
 
     background = X_train[np.random.choice(X_train.shape[0], 1, replace=False)]
 
     # Create a ThreadPoolExecutor with 128 threads
-    with concurrent.futures.ThreadPoolExecutor(max_workers=128) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         # Create a list to store the future objects
         futures = []
 
@@ -194,8 +191,11 @@ if __name__ == '__main__':
         # Retrieve the results as they become available
         results = []
         for future in concurrent.futures.as_completed(futures):
-            result = future.result()
-            results.append(result)
+            try:
+                result = future.result()
+                results.append(result)
+            except Exception as e:
+                print(f"Error occurred: {e}")
 
     print(results)
 
