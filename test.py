@@ -26,7 +26,7 @@ def main():
     opt = easydict.EasyDict({
         "model": "GRU",
         "datapath": "Dataset1/",
-        "savepath": "Experiment1/GRU/8/Flatten/Runx/",
+        "savepath": "Experiment1/GRU/8/Flatten/Run4/",
         "extension": ".dat",
         "batch_size": 32,
         "plots_in": False,
@@ -59,7 +59,7 @@ def main():
     ###########################################################################
     # Load Model and Evaluate
     ###########################################################################
-    output_size = 4
+    output_size = 1
     global model
     model = load_model(opt.savepath + 'model.h5')
     model.summary()
@@ -67,27 +67,56 @@ def main():
     print("Starting to explain...")
     X_train = np.array(trainx)
     X_test = np.array(testx)
-
+        
+    y_train = np.array(trainy)
+    y_test = np.array(testy)
+    
     nin_names = nin[1:len(nin)]
+    nout_names = nout[1:len(nout)]
 
-    return X_train, X_test, nin_names
+    return X_train, X_test, nin_names, nout_names, y_train, y_test
 
 if __name__ == '__main__':
-    X_train, X_test, nin_names = main()
+    X_train, X_test, nin_names, nout_names, y_train, y_test = main()
+    
+    print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
     background = X_train[np.random.choice(X_train.shape[0], 1, replace=False)]
+    
+    print(background)
+    print(background.shape)
 
-    explainer = shap.DeepExplainer(model, background)
+    explainer_background = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
+    explainer_X_train = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), X_train)
+    
 
-    shap_values = explainer.shap_values(X_test[:1,:,:])
-
-    print(shap_values)
-
-    with open("shap_values.pkl", 'wb') as file:
-        pickle.dump(shap_values, file)
-
-
-
+    shap_values_1_background = explainer_background.shap_values(X_test[:1,:,:])
+#     with open("shap_values_1_background.pkl", 'wb') as file:
+    with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/8/Flatten/Run4/pickles/shap_values_1_background.pkl", 'wb') as file:
+        pickle.dump(shap_values_1_background, file)
+    print(shap_values_1_background)
+    print(np.array(shap_values_1_background).shape)
+        
+    shap_values_1_X_train = explainer_X_train.shap_values(X_test[:1,:,:])
+#     with open("shap_values_1_X_train.pkl", 'wb') as file:
+    with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/8/Flatten/Run4/pickles/shap_values_1_X_train.pkl", 'wb') as file:
+        pickle.dump(shap_values_1_X_train, file)
+    print(shap_values_1_X_train)
+    print(np.array(shap_values_1_X_train).shape)
+    
+    shap_values_10_background = explainer_background.shap_values(X_test[:,:,:])
+#     with open("shap_values_10_background.pkl", 'wb') as file:
+    with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/8/Flatten/Run4/pickles/shap_values_10_background.pkl", 'wb') as file:
+        pickle.dump(shap_values_10_background, file)    
+    print(shap_values_10_background)
+    print(np.array(shap_values_10_background).shape)
+    
+    shap_values_10_X_train = explainer_X_train.shap_values(X_test[:,:,:])
+#     with open("shap_values_10_X_train.pkl", 'wb') as file:
+    with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/8/Flatten/Run4/pickles/shap_values_10_X_train.pkl", 'wb') as file:
+        pickle.dump(shap_values_10_X_train, file)
+    print(shap_values_10_X_train)
+    print(np.array(shap_values_10_X_train).shape)
 
 
 

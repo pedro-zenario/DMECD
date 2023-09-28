@@ -29,14 +29,14 @@ def createmodel(opt, output_size):
     return model
 
 def getcallbacks(opt):
-    filepath= opt.savepath + "weights/weights-{epoch:02d}-{val_loss:.6f}.hdf5"
+    filepath = opt.savepath + "weights/weights-{epoch:02d}-{val_loss:.6f}.hdf5"
     checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1,
-        save_best_only=True, save_weights_only=False, mode='auto', period=1)
+                                 save_best_only=True, save_weights_only=False, mode='auto', period=1)
     if opt.early_stop == False:
         callbacks_list = [checkpoint]
     elif opt.early_stop == True:
         early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=opt.patience,
-            verbose=1, mode="auto")
+                                   verbose=1, mode="auto")
         callbacks_list = [checkpoint, early_stop]
 
     return callbacks_list
@@ -58,6 +58,23 @@ def loadweights(opt, model):
 
     return model
 
+def plothistory(history, epochs, path):
+    
+    training_loss = history.history['loss']
+    test_loss = history.history['val_loss']
+    
+    epoch_count = range(1, epochs + 1)
+
+    plt.plot(epoch_count, training_loss, 'r--')
+    plt.plot(epoch_count, test_loss, 'b-')
+    plt.legend(['Training Loss', 'Test Loss'], loc='upper right')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    Path(path + "loss_plots").mkdir(parents=True, exist_ok=True)
+    plt.savefig(path + "loss_plots/loss_plot.pdf")
+    plt.close()
+
+    return
 
 def main():
     ###########################################################################
@@ -101,22 +118,36 @@ def main():
     trainx, trainy = readdata(opt.datapath, train, neurons, nin, nout)
     validx, validy = readdata(opt.datapath, valid, neurons, nin, nout)
     testx, testy = readdata(opt.datapath, test, neurons, nin, nout)
+    
+#     print(type(trainx), type(trainy))
+#     print(len(trainy))
+#     print(len(trainy[0]))
+    
+#     print("I am going to print in MAIN")
+#     print(np.array(trainx).shape)
+#     print(np.array(trainy).shape)
 
-    # print(np.array(trainx).shape)
-    # print(np.array(trainy).shape)
+#     trainy = np.reshape(trainy, (20, 1000), order='F')
+#     validy = np.reshape(validy, (10, 1000), order='F')
+#     testy = np.reshape(testy, (10, 1000), order='F')
+    
+#     print(type(trainx), type(trainy))
+#     print(trainy.shape)
+    
+#     trainy = trainy.tolist()
+#     validy = validy.tolist()
+#     testy = testy.tolist()
+#     print(type(trainx), type(trainy))
+#     print(len(trainy))
+#     print(len(trainy[0]))
 
-    # trainy = np.reshape(trainy, (20, 1000), order='F')
-    # validy = np.reshape(validy, (10, 1000), order='F')
-    # testy = np.reshape(testy, (10, 1000), order='F')
+#     print(np.array(trainy).shape)
 
     trainy = np.reshape(trainy, (20, 4000), order='F')
     validy = np.reshape(validy, (10, 4000), order='F')
     testy = np.reshape(testy, (10, 4000), order='F')
-
-    # trainy = np.reshape(trainy, (20, 200), order='F')
-    # validy = np.reshape(validy, (10, 200), order='F')
-    # testy = np.reshape(testy, (10, 200), order='F')
-
+    
+#     print(np.array(trainy).shape)
 
     if opt.plots:
         plotdata(trainx, '/train_data', '/x', opt.model, opt.savepath)
@@ -149,6 +180,7 @@ def main():
     savehistory(history, opt)
     model = loadweights(opt, model)
     model.save(opt.savepath + 'model.h5')
+    plothistory(history, opt.epochs, opt.savepath)
 
 if __name__ == "__main__":
     main()
