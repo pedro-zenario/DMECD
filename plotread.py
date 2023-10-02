@@ -40,42 +40,23 @@ def readdata(data_path, file_list, cols, nin, nout):
             sep = "\s+", #separator whitespace
             names=cols)
         df = df.set_index('time')
-#         print("df:\n")
-#         print(df)
-        
+       
         x = df.drop(columns = nout[1:5])
         y = df.drop(columns = nin[1:5])
-#         y = y.drop(columns = nout[2:5])
+        y = y.drop(columns = nout[2:5])
+
         datax.append(x)
         datay.append(y)
-        
-#         print("x:\n")
-#         print(x)
-#         print("y:\n")
-#         print(y)
-#         print("datax:\n")
-#         print(datax)
-#         print("datay:\n")
-#         print(datay)
-
-
-#     print("I am going to print in READDATA_1")
-#     print(np.array(datax).shape)
-#     print(np.array(datay).shape)
-
-    # datax = np.array(datax)[:,:50,:]
-    # datay = np.array(datay)[:,:50,:]
 
 #     datay = np.array(datay)[:,:,:1]
-    
-#     print("I am going to print in READDATA_2")
-#     print(np.array(datax).shape)
-#     print(np.array(datay).shape)
+
+#     print("I am going to print in READDATA")
+#     print(type(datax), type(datay))
+#     print(np.array(datax).shape, np.array(datay).shape)
 
     return datax, datay
 
 def plotdata(sequences, dtype, var, folder, path):
-    
     i=0
     for seq in sequences:
         seq = pd.DataFrame(seq)

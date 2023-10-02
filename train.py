@@ -42,7 +42,6 @@ def getcallbacks(opt):
     return callbacks_list
 
 def savehistory(history, opt):
-
     dat = np.array([history.history['loss'], history.history['val_loss']])
     a = np.column_stack((dat))
     np.savetxt(opt.savepath + 'training_history.dat', a, delimiter=' ')
@@ -59,7 +58,6 @@ def loadweights(opt, model):
     return model
 
 def plothistory(history, epochs, path):
-    
     training_loss = history.history['loss']
     test_loss = history.history['val_loss']
     
@@ -118,14 +116,10 @@ def main():
     trainx, trainy = readdata(opt.datapath, train, neurons, nin, nout)
     validx, validy = readdata(opt.datapath, valid, neurons, nin, nout)
     testx, testy = readdata(opt.datapath, test, neurons, nin, nout)
-    
-#     print(type(trainx), type(trainy))
-#     print(len(trainy))
-#     print(len(trainy[0]))
-    
+       
 #     print("I am going to print in MAIN")
-#     print(np.array(trainx).shape)
-#     print(np.array(trainy).shape)
+#     print(type(trainx), type(trainy))
+#     print(np.array(trainx).shape, np.array(trainy).shape)
 
 #     trainy = np.reshape(trainy, (20, 1000), order='F')
 #     validy = np.reshape(validy, (10, 1000), order='F')
@@ -137,17 +131,27 @@ def main():
 #     trainy = trainy.tolist()
 #     validy = validy.tolist()
 #     testy = testy.tolist()
+
 #     print(type(trainx), type(trainy))
 #     print(len(trainy))
 #     print(len(trainy[0]))
 
 #     print(np.array(trainy).shape)
 
-    trainy = np.reshape(trainy, (20, 4000), order='F')
-    validy = np.reshape(validy, (10, 4000), order='F')
-    testy = np.reshape(testy, (10, 4000), order='F')
+#     trainy = np.reshape(trainy, (20, 4000), order='F')
+#     validy = np.reshape(validy, (10, 4000), order='F')
+#     testy = np.reshape(testy, (10, 4000), order='F')
     
-#     print(np.array(trainy).shape)
+#     print("I am going to print in MAIN 2")
+#     print(type(trainx), type(trainy))
+#     print(np.array(trainx).shape, np.array(trainy).shape)
+    
+#     trainy = trainy.tolist()
+#     validy = validy.tolist()
+#     testy = testy.tolist()
+    
+#     print(type(trainx), type(trainy))
+#     print(np.array(trainx).shape, np.array(trainy).shape)
 
     if opt.plots:
         plotdata(trainx, '/train_data', '/x', opt.model, opt.savepath)
@@ -160,10 +164,10 @@ def main():
     ###########################################################################
     # Create and Train Model
     ###########################################################################
-    output_size = 4
+    output_size = 1
     model = createmodel(opt, output_size)
     model.compile(optimizer=opt_function, loss='mean_squared_error')
-    callbacks_list = getcallbacks(opt)
+    callbacks_list = getcallbacks(opt)    
     history=model.fit(
         np.array(trainx),
         np.array(trainy),
