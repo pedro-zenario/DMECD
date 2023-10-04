@@ -43,7 +43,7 @@ def readdata(data_path, file_list, cols, nin, nout):
        
         x = df.drop(columns = nout[1:5])
         y = df.drop(columns = nin[1:5])
-#         y = y.drop(columns = nout[2:5])
+        y = y.drop(columns = nout[2:5])
 
 #         y = y.drop(columns = nout[3:5])
 #         y = y.drop(columns = nout[1:2])
@@ -51,7 +51,7 @@ def readdata(data_path, file_list, cols, nin, nout):
 #         y = y.drop(columns = nout[4:5])
 #         y = y.drop(columns = nout[1:3])
 
-        y = y.drop(columns = nout[1:4])
+#         y = y.drop(columns = nout[1:4])
 
 
         datax.append(x)

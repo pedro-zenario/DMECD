@@ -26,10 +26,10 @@ def evaluateresults(model, opt, trainx, trainy, validx, validy, testx, testy, ou
     return train_l, valid_l, test_l
 
 def plotresults(opt, real, predicted, folder, string, path, out_size):
-#     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
+    cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
 #     cols = ['LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
 #     cols = ['PVR_Predicted', 'VB1_Predicted']
-    cols = ['VB1_Predicted']
+#     cols = ['VB1_Predicted']
     
 #     real = np.reshape(real, (len(real), 1000, 4), order='F')
 #     real = real.tolist()
@@ -64,46 +64,46 @@ def plotresults(opt, real, predicted, folder, string, path, out_size):
 # def plotresults(opt, real, predicted, folder, string, path, out_size):
 #     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
         
-# #     # output_size=4
-# #     i = 0
-# #     for frame in predicted:
+#     # output_size=4
+#     i = 0
+#     for frame in predicted:
         
-# # #         print(type(real))
+# #         print(type(real))
         
-# #         real_nparray = np.array(real)
+#         real_nparray = np.array(real)
         
-# # #         print(real)
-# # #         print(real_nparray)
-# # #         print(real_nparray.shape)
-# # #         print(real_nparray.ndim)
+# #         print(real)
+# #         print(real_nparray)
+# #         print(real_nparray.shape)
+#         print(real_nparray.ndim)
         
-# #         if (real_nparray.ndim==3):
-# #             pos = real[i].shape[1]
-# #             for j in range(out_size):
-# #                 real[i].insert(
-# #                     loc = pos,
-# #                     column = cols[j],
-# #                     value = frame[:,j]
-# #                 )
-# #                 pos += 1
+#         if (real_nparray.ndim==3):
+#             pos = real[i].shape[1]
+#             for j in range(out_size):
+#                 real[i].insert(
+#                     loc = pos,
+#                     column = cols[j],
+#                     value = frame[:,j]
+#                 )
+#                 pos += 1
                 
-# # #         print(real[i])
+# #         print(real[i])
         
-# #         df = pd.DataFrame(real[i])
-# #         df.plot(kind='line')
+#         df = pd.DataFrame(real[i])
+#         df.plot(kind='line')
         
-# # #         print(df)
+# #         print(df)
         
-# #         Path(path + "results_files").mkdir(parents=True, exist_ok=True)
-# #         df.to_csv(path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
+#         Path(path + "results_files").mkdir(parents=True, exist_ok=True)
+#         df.to_csv(path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
         
-# #         if opt.plots_out:
-# #             plt.legend(loc='upper right')
-# #             Path(path + "results_plots").mkdir(parents=True, exist_ok=True)
-# #             plt.savefig(path + "results_plots" + string + str(i) + '_response.pdf')
-# #             plt.close()
+#         if opt.plots_out:
+#             plt.legend(loc='upper right')
+#             Path(path + "results_plots").mkdir(parents=True, exist_ok=True)
+#             plt.savefig(path + "results_plots" + string + str(i) + '_response.pdf')
+#             plt.close()
 
-# #         i += 1
+#         i += 1
 
 
 
