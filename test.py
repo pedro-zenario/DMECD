@@ -120,6 +120,119 @@ if __name__ == '__main__':
 
 
 
+
+
+
+
+#     gpu_device = tf.config.list_physical_devices('GPU')[0]
+#     tf.config.experimental.set_memory_growth(gpu_device, True)
+    
+# #     with tf.device('/cpu:0'):
+# #         print("Inside cpu...")
+# # #         X_train, X_test, nin_names, nout_names, y_train, y_test = main()
+        
+# # #         print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+# # #         background = X_train[np.random.choice(X_train.shape[0], 1, replace=False)]
+        
+# # #         print(background)
+# # #         print(background.shape)
+
+# # #         explainer_background = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
+# # # #         explainer_X_train = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), X_train)
+
+#     # with tf.device('/GPU:0'):
+#     with tf.device('/device:GPU:0'):
+#         print("Inside gpu...")
+
+#         # get the start time
+#         st_1 = time.time()
+        
+#         X_train, X_test, nin_names, nout_names, y_train, y_test = main()
+#         print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+        
+#         # get the end time
+#         et_1 = time.time()
+        
+#         # get the execution time
+#         elapsed_time_1 = et_1 - st_1
+#         print('Execution time 1:', elapsed_time_1, 'seconds')
+
+
+
+#         # get the start time
+#         st_2 = time.time()
+
+#         background = X_train[np.random.choice(X_train.shape[0], 1, replace=False)]
+#         print(background)
+#         print(background.shape)
+
+#         # get the end time
+#         et_2 = time.time()
+        
+#         # get the execution time
+#         elapsed_time_2 = et_2 - st_2
+#         print('Execution time 2:', elapsed_time_2, 'seconds')
+
+
+
+#         # get the start time
+#         st_3 = time.time()
+
+#         explainer_background = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
+# #         explainer_X_train = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), X_train)
+
+#         # get the end time
+#         et_3 = time.time()
+        
+#         # get the execution time
+#         elapsed_time_3 = et_3 - st_3
+#         print('Execution time 3:', elapsed_time_3, 'seconds')
+
+
+
+
+#         # get the end time
+#         st_4 = time.time()
+
+#         print("Going to calculate shap values now...")
+#         shap_values_1_background = explainer_background.shap_values(X_test[:1,:,:])
+
+#         # get the end time
+#         et_4 = time.time()
+        
+#         # get the execution time
+#         elapsed_time_4 = et_4 - st_4
+#         print('Execution time 4:', elapsed_time_4, 'seconds')
+
+
+
+#         # get the end time
+#         st_5 = time.time()
+
+#     # with open("shap_values_1_background.pkl", 'wb') as file:
+#         # with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/4/Flatten/VB1/adam_001/pickles/shap_values_1_background_gpu.pkl", 'wb') as file:
+#         with open("/home/guests2/pze/Experiment1/GRU/4/Flatten/DB1/adam/pickles/shap_values_1_background_gpu.pkl", 'wb') as file:
+#             pickle.dump(shap_values_1_background, file)
+#         print(shap_values_1_background)
+#         print(np.array(shap_values_1_background).shape)
+
+#         # get the end time
+#         et_5 = time.time()
+        
+#         # get the execution time
+#         elapsed_time_5 = et_5 - st_5
+#         print('Execution time 5:', elapsed_time_5, 'seconds')
+
+
+
+
+
+
+
+
+
+
+
 # import argparse
 # import easydict
 # import numpy as np
