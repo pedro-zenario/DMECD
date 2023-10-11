@@ -25,8 +25,8 @@ def main():
     ###########################################################################
     opt = easydict.EasyDict({
         "model": "GRU",
-        "datapath": "Dataset1y/",
-        "savepath": "Experiment1/GRU/4/Flatten_modified_2/VB1/adam_001/",
+        "datapath": "Dataset_1z/",
+        "savepath": "Experiment1/GRU/4/Flatten_modified_1z/VB1/adam_001/",
         "extension": ".dat",
         "batch_size": 32,
         "plots_in": False,
@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     shap_values_1_background = explainer_background.shap_values(X_test[:1,:,:])
 #     with open("shap_values_1_background.pkl", 'wb') as file:
-    with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/4/Flatten_modified_2/VB1/adam_001/pickles/shap_values_1_background.pkl", 'wb') as file:
+    with open("/home/zenario/DMECD/DMECD/Experiment1/GRU/4/Flatten_modified_1z/VB1/adam_001/pickles/shap_values_1_background.pkl", 'wb') as file:
         pickle.dump(shap_values_1_background, file)
     print(shap_values_1_background)
     print(np.array(shap_values_1_background).shape)
