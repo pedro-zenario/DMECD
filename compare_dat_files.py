@@ -24,8 +24,8 @@ def main():
     # Parser Definition
     ###########################################################################
     parser = argparse.ArgumentParser()
-    parser.add_argument('-datapath1', type=str, default="Dataset_1y/")
-    parser.add_argument('-datapath2', type=str, default="Dataset_1Y/")
+    parser.add_argument('-datapath1', type=str, default="Dataset1/")
+    parser.add_argument('-datapath2', type=str, default="Dataset_1w/")
     opt = parser.parse_args()
 
     src_files1 = os.listdir(opt.datapath1)

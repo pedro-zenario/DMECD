@@ -26,10 +26,10 @@ def evaluateresults(model, opt, trainx, trainy, validx, validy, testx, testy, ou
     return train_l, valid_l, test_l
 
 def plotresults(opt, real, predicted, folder, string, path, out_size):
-#     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
+    cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
 #     cols = ['LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
 #     cols = ['PVR_Predicted', 'VB1_Predicted']
-    cols = ['VB1_Predicted']
+#     cols = ['VB1_Predicted']
     
 #     real = np.reshape(real, (len(real), 1000, 4), order='F')
 #     real = real.tolist()
