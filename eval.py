@@ -26,10 +26,10 @@ def evaluateresults(model, opt, trainx, trainy, validx, validy, testx, testy, ou
     return train_l, valid_l, test_l
 
 def plotresults(opt, real, predicted, folder, string, path, out_size):
-    cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
+#     cols = ['DB1_Predicted', 'LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
 #     cols = ['LUAL_Predicted', 'PVR_Predicted', 'VB1_Predicted']
 #     cols = ['PVR_Predicted', 'VB1_Predicted']
-#     cols = ['VB1_Predicted']
+    cols = ['VB1_Predicted']
     
 #     real = np.reshape(real, (len(real), 1000, 4), order='F')
 #     real = real.tolist()
@@ -45,7 +45,19 @@ def plotresults(opt, real, predicted, folder, string, path, out_size):
                 value = frame[:,j]
             )
             pos = pos + 1
-        real[i].plot(kind='line')
+        
+        real[i].iloc[:, 0].plot(kind='line')
+        real[i].iloc[:, 1].plot(kind='line', linestyle='--')
+
+#         real[i].iloc[:, 0].plot(kind='line')
+#         real[i].iloc[:, 1].plot(kind='line')
+#         real[i].iloc[:, 2].plot(kind='line')
+#         real[i].iloc[:, 3].plot(kind='line')
+#         real[i].iloc[:, 4].plot(kind='line', linestyle='--')
+#         real[i].iloc[:, 5].plot(kind='line', linestyle='--')
+#         real[i].iloc[:, 6].plot(kind='line', linestyle='--')
+#         real[i].iloc[:, 7].plot(kind='line', linestyle='--')
+        
         Path(path + "results_files").mkdir(parents=True, exist_ok=True)
         real[i].to_csv(
             path + "results_files" + string + str(i) + '_data.dat', sep=' ', header=False)
@@ -56,8 +68,6 @@ def plotresults(opt, real, predicted, folder, string, path, out_size):
             plt.close()
 
         i = i + 1
-
-
 
 
 
@@ -422,6 +432,7 @@ def main():
     ###########################################################################
     # Load Model and Evaluate
     ###########################################################################
+#     output_size = 4
     output_size = 1
     model = load_model(opt.savepath + 'model.h5')
     model.summary()
